@@ -5,6 +5,8 @@ const readBtn = document.getElementById('read');
 const toggleBtn = document.getElementById('toggle');
 const closeBtn = document.getElementById('close');
 
+let voices = [];
+
 const data = [
   {
     image: './img/drink.jpg',
@@ -71,3 +73,24 @@ function createBox(item) {
 
   main.appendChild(box);
 }
+
+function getVoices() {
+  voices = speechSynthesis.getVoices();
+
+  voices.forEach(voice => {
+    const option = document.createElement('option');
+
+    option.value = voice.name;
+    option.innerHTML = `${voice.name} ${voice.lang}`;
+
+    voicesSelect.appendChild(option);
+  })
+}
+
+speechSynthesis.addEventListener('voiceschanged', getVoices);
+
+toggleBtn.addEventListener('click', () => document.getElementById('text-box').classList.toggle('show'));
+
+closeBtn.addEventListener('click', () => document.getElementById('text-box').classList.remove('show'));
+
+getVoices();
