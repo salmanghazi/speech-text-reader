@@ -75,7 +75,6 @@ function createBox(item) {
 
   box.addEventListener('click', () => {
     setTextMessage(text);
-    speechText();
 
     box.classList.add('active');
 
@@ -97,15 +96,16 @@ function getVoices() {
     option.innerHTML = `${voice.name} ${voice.lang}`;
 
     voicesSelect.appendChild(option);
-  })
+  });
 }
 
 function setTextMessage(text) {
   message.text = text;
+  speechSynthesis.speak(message);
 }
 
-function speechText() {
-  speechSynthesis.speak(message);
+function setVoice(e) {
+  message.voice = voices.find(voice => voice.name === e.target.value);
 }
 
 speechSynthesis.addEventListener('voiceschanged', getVoices);
@@ -113,5 +113,11 @@ speechSynthesis.addEventListener('voiceschanged', getVoices);
 toggleBtn.addEventListener('click', () => document.getElementById('text-box').classList.toggle('show'));
 
 closeBtn.addEventListener('click', () => document.getElementById('text-box').classList.remove('show'));
+
+voicesSelect.addEventListener('change', setVoice);
+
+readBtn.addEventListener('click', () => {
+  setTextMessage(textarea.value);
+});
 
 getVoices();
