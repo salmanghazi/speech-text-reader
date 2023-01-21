@@ -7,6 +7,8 @@ const closeBtn = document.getElementById('close');
 
 let voices = [];
 
+const message = new SpeechSynthesisUtterance();
+
 const data = [
   {
     image: './img/drink.jpg',
@@ -71,6 +73,17 @@ function createBox(item) {
     <p class="info">${text}</p>
   `;
 
+  box.addEventListener('click', () => {
+    setTextMessage(text);
+    speechText();
+
+    box.classList.add('active');
+
+    setTimeout(() => {
+      box.classList.remove('active');
+    }, 800);
+  });
+
   main.appendChild(box);
 }
 
@@ -85,6 +98,14 @@ function getVoices() {
 
     voicesSelect.appendChild(option);
   })
+}
+
+function setTextMessage(text) {
+  message.text = text;
+}
+
+function speechText() {
+  speechSynthesis.speak(message);
 }
 
 speechSynthesis.addEventListener('voiceschanged', getVoices);
